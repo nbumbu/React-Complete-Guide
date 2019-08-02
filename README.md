@@ -1,5 +1,8 @@
 # React-Complete-Guide
 
+# Create a react app: 
+
+    npm init react-app my-app
 
 # Components & JSX Cheat Sheet
 ### Components are the core building block of React apps. Actually, React really is just a library for creating components in its core.
