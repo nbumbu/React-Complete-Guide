@@ -2,10 +2,7 @@ import React from 'react';
 import classes from './Person.css'
 
 const person = (props) => {
-    const rnd = Math.random();
-    if (rnd > .7) {
-        throw new Error('Something went really bad');
-    }
+    console.log('[Person.js] is rendering...........');
     return (
         <div className={classes.Person}>
             <p onClick={props.click}>I'm a {props.name} and I am {props.age} year old!</p>
