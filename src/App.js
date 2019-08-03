@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -56,14 +57,7 @@ class App extends Component {
 
   render() {
 
-    const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
+    let btnClass = '';
 
     let persons = null;
 
@@ -72,36 +66,39 @@ class App extends Component {
         <div>
           {
             this.state.persons.map((person, index) => {
-              return <Person
-              name={person.name} 
-              age={person.age}
-              click={() => this.deltePersonHandler(index)}
-              key={person.id}
-              changed={(event) => this.nameChangedHandler(event, person.id)}/>
+              return (
+              <ErrorBoundary key={person.id}>
+                <Person
+                  name={person.name} 
+                  age={person.age}
+                  click={() => this.deltePersonHandler(index)}
+                  changed={(event) => this.nameChangedHandler(event, person.id)}/>
+              </ErrorBoundary>
+              )
             })
           }
       </div>
       );
-      style.backgroundColor = 'red';
+      btnClass = classes.Red;
     }
 
-    let classes = [];
+    let assignedClasses = [];
     if (this.state.persons.length <= 2) {
-      classes.push('red');
+      assignedClasses.push(classes.red);
     }
 
     if (this.state.persons.length <= 1) {
-      classes.push('bold');
+      assignedClasses.push(classes.bold);
     }
 
-
+    
 
 
     return ( // Return JSX not HTML
-        <div className="App">
+        <div className={classes.App}>
           <h1>I am a React App!!!</h1>
-          <h2 className={classes.join(' ')}>This is really working!</h2>
-          <button onClick={this.togglePersonsHandler} style={style}>Toggle Persons</button>
+          <h2 className={assignedClasses.join(' ')}>This is really working!</h2>
+          <button className={btnClass} onClick={this.togglePersonsHandler}>Toggle Persons</button>
           {persons}
         </div>
     
