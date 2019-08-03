@@ -7,60 +7,56 @@ class App extends Component {
   state = {
     persons: [
       {
-        name: 'Max',
+        id:'asdf12', name: 'Max',
         age: 22
       },
       {
-        name: 'George',
+        id:'ffeew1', name: 'George',
         age: 24
       },
       {
-        name: 'Isa',
+        id:'123f3', name: 'Isa',
         age: 18
       }
     ],
-    otherState: 'Other value'
+    otherState: 'Other value',
+    showPersons: false
   }
 
-  switchNameHandler = (newName) => {
-    // console.log('Was clicked!')
-    // DO NOT MUTATE THE STATE DIRECTLY this.state.persons[0].name = 'Jorjio';
+
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(pers => {
+      return pers.id === id
+    })
+    const person = {...this.state.persons[personIndex]};
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
     this.setState({
-      persons: [
-        {
-          name: newName,
-          age: 22
-        },
-        {
-          name: 'George',
-          age: 24
-        },
-        {
-          name: 'Isa',
-          age: 30
-        }
-      ]});
+      persons: persons});
   }
 
-  nameChangedHandler = (event) => {
+  togglePersonsHandler = () => {
+    const doesShow  = this.state.showPersons;
     this.setState({
-      persons: [
-        {
-          name: 'Max',
-          age: 22
-        },
-        {
-          name: event.target.value,
-          age: 24
-        },
-        {
-          name: 'Isa',
-          age: 30
-        }
-      ]});
+      showPersons: !doesShow
+    });
+  }
+
+  deltePersonHandler = (personIndex) => {
+    // Change the state in an imutable way
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons]; // create a copy of a state
+    console.log(persons)
+    persons.splice(personIndex, 1); // modify the copy of the state
+    this.setState({ // update the original state
+      persons: persons
+    })
   }
 
   render() {
+
     const style = {
       backgroundColor: 'red',
       font: inherits,
@@ -69,23 +65,42 @@ class App extends Component {
       cursor: 'pointer'
     };
 
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {
+            this.state.persons.map((person, index) => {
+              return <Person
+              name={person.name} 
+              age={person.age}
+              click={() => this.deltePersonHandler(index)}
+              key={person.id}
+              changed={(event) => this.nameChangedHandler(event, person.id)}/>
+            })
+          }
+          {/* <Person 
+          name={this.state.persons[0].name} 
+          age={this.state.persons[0].age}/>
+          <Person 
+          name={this.state.persons[1].name} 
+          age={this.state.persons[1].age}
+          click={this.switchNameHandler.bind(this, 'No Bro')}
+          changed={this.nameChangedHandler}>My hobbies: racing</Person>
+          <Person 
+          name={this.state.persons[2].name} 
+          age={this.state.persons[2].age}/> */}
+      </div>
+      );
+    }
+
     return ( // Return JSX not HTML
       <div className="App">
         <h1>I am a React App!!!</h1>
         <h2>This is really working!</h2>
-        <button onClick={() => this.switchNameHandler('Bro')} style={style    }>Switch Name</button>
-        <Person 
-        name={this.state.persons[0].name} 
-        age={this.state.persons[0].age}/>
-        <Person 
-        name={this.state.persons[1].name} 
-        age={this.state.persons[1].age}
-        click={this.switchNameHandler.bind(this, 'No Bro')}
-        changed={this.nameChangedHandler}>My hobbies: racing</Person>
-        <Person 
-        name={this.state.persons[2].name} 
-        age={this.state.persons[2].age}/>
-
+        <button onClick={this.togglePersonsHandler} style={style}>Toggle Persons</button>
+        {persons}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'I am a React App!!!!'));
