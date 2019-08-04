@@ -1,17 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import classes from './Cockpit.css';
 
 const cockpit = (props) => {
+    useEffect(() => {// Use effect executes for every render cycle
+        console.log('[Cockpit.js] useEffect')
+        // http request
+        setTimeout(() => {
+            alert('Saved data to cloud!');
+        }, 1000);
+        return () => {
+            console.log('[Cockpit.js] cleanup work in useEffect');
+        };   
+    }, []);
+
+    useEffect(() => {
+        console.log('[Cockpit.js] 2nd useEffect')
+        return () => {
+            console.log('[Cockpit.js] cleanup work in 2nd useEffect');
+        };   
+    });
+
     let btnClass = '';
+    let assignedClasses = [];
+
     if (props.showPersons) {
         btnClass = classes.Red;
     }
-    let assignedClasses = [];
-    if (props.persons.length <= 2) {
+    if (props.personsLength <= 2) {
         assignedClasses.push(classes.red);
     }
 
-    if (props.persons.length <= 1) {
+    if (props.personsLength <= 1) {
         assignedClasses.push(classes.bold);
     }
     return (
@@ -24,4 +43,4 @@ const cockpit = (props) => {
     )
 };
 
-export default cockpit;
+export default React.memo(cockpit); // store a snapshot of this component and it will permit to change it only when it's input was changed
