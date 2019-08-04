@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import classes from './Cockpit.css';
-
+import AuthContext from '../../context/auth-context';
 const cockpit = (props) => {
     const toggleBtnRef = useRef(null);
 
@@ -13,7 +13,7 @@ const cockpit = (props) => {
         toggleBtnRef.current.click();
         return () => {
             console.log('[Cockpit.js] cleanup work in useEffect');
-        };   
+        };
     }, []);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const cockpit = (props) => {
         console.log('[Cockpit.js] 2nd useEffect')
         return () => {
             console.log('[Cockpit.js] cleanup work in 2nd useEffect');
-        };   
+        };
     });
 
     let btnClass = '';
@@ -42,10 +42,14 @@ const cockpit = (props) => {
             <h1>I am a {props.title} App!!!</h1>
             <h2 className={assignedClasses.join(' ')}>This is really working!</h2>
             <button
-            ref={toggleBtnRef} 
-            className={btnClass} 
-            onClick={props.clicked}>Toggle Persons</button>
-            <button onClick={props.login}>Log me in</button>
+                ref={toggleBtnRef}
+                className={btnClass}
+                onClick={props.clicked}>Toggle Persons</button>
+            <AuthContext.Consumer>
+                {(context) => {
+                    return <button onClick={context.login}>Log me in</button>
+                }}
+            </AuthContext.Consumer>
         </div>
 
     )
