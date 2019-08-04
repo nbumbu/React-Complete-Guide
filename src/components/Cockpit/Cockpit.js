@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import classes from './Cockpit.css';
 import AuthContext from '../../context/auth-context';
 const cockpit = (props) => {
     const toggleBtnRef = useRef(null);
+
+    const authContext = useContext(AuthContext);
+
+    console.log(authContext.authetificated)
 
     useEffect(() => {// Use effect executes for every render cycle
         console.log('[Cockpit.js] useEffect')
@@ -45,11 +49,7 @@ const cockpit = (props) => {
                 ref={toggleBtnRef}
                 className={btnClass}
                 onClick={props.clicked}>Toggle Persons</button>
-            <AuthContext.Consumer>
-                {(context) => {
-                    return <button onClick={context.login}>Log me in</button>
-                }}
-            </AuthContext.Consumer>
+            <button onClick={authContext.login}>Log me in</button>
         </div>
 
     )
