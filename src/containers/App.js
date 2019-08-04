@@ -28,7 +28,8 @@ class App extends Component {
       otherState: 'Other value',
       showPersons: false,
       showCockpit: true,
-      changeCounter: 0
+      changeCounter: 0,
+      authenticated: false
     }
   }
 
@@ -85,6 +86,13 @@ class App extends Component {
     })
   }
 
+  loginhandler = () => {
+    console.log('login called')
+    this.setState({
+      authenticated: true
+    });
+  }
+
   render() {
     console.log('[Aoo.js] render');
     let persons = null;
@@ -93,7 +101,8 @@ class App extends Component {
       persons = 
           <Persons persons={this.state.persons}
             clicked={this.deltePersonHandler}
-            changed={this.nameChangedHandler} />
+            changed={this.nameChangedHandler}
+            isAuthentificated={this.state.authenticated} />
     }
 
     return ( // Return JSX not HTML
@@ -103,7 +112,8 @@ class App extends Component {
         title={this.props.appTitle}
         showPersons={this.state.showPersons}
         personsLength={this.state.persons.length}
-        clicked={this.togglePersonsHandler}/> : null}
+        clicked={this.togglePersonsHandler}
+        login={this.loginhandler}/> : null}
         {persons}
       </Aux>
 
